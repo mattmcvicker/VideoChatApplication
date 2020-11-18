@@ -1,7 +1,6 @@
 # VideoChatApplication
 
-## Project link:
-[Proposal](https://docs.google.com/document/d/1U90b1wiZy8jIflSR2nrX0vsznA1GCBe5P63_CAlR3Zc/edit?pli=1)
+## [Proposal Link](https://docs.google.com/document/d/1U90b1wiZy8jIflSR2nrX0vsznA1GCBe5P63_CAlR3Zc/edit?pli=1)
 
 ### Project Description
 Our target audience is people who want to have an open debate about specific subjects with people that they disagree with. These subjects can be about anything, from politics to sports to food. A secondary audience that we could see using this application is TA’s using this application as an icebreaker for students. We decided to implement a video chat instead of something like a text chat because it's a lot easier to communicate and get your ideas across when you’re talking face-to-face with someone compared to when you’re trying to communicate with them through text. This is also a way to weed out trolls, making it so that there is some amount of accountability for the things that you’re saying rather than it being behind an anonymous text chat. 
