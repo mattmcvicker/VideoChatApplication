@@ -1,4 +1,4 @@
-# VideoChatApplication
+# WeFeud
 
 ## [Proposal Link](https://docs.google.com/document/d/1U90b1wiZy8jIflSR2nrX0vsznA1GCBe5P63_CAlR3Zc/edit?pli=1)
 
