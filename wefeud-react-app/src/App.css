@@ -4,9 +4,9 @@ body{
   color: white;
   align-items: center;
 
-  background: #43cea2; /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #43cea2, #185a9d); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #43cea2, #185a9d); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: #ce4343; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #ce4f43, #ffffff); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #ce4343, #ffffff); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -19,7 +19,7 @@ h1{
   flex-direction: column;
   align-items: center;
   font-family: 'Cabin', sans-serif;
-  padding-top: 300px;
+  padding-top: 200px;
 }
 
 .app h3{
@@ -43,13 +43,12 @@ input{
   margin-bottom: 4px;
 }
 button{
-  width: 100px;
   height:40px;
   background-color: #ffffff;
   border:none;
   box-shadow: 2px 2px 1px #18619d;
   border-radius: 10px;
-  margin-top: 10px;
+  margin-top: 20px;
   margin-bottom: 20px;
   
 }
@@ -75,4 +74,8 @@ video{
   display: flex;
   flex-direction: column-reverse;
   align-items: center;
+}
+
+#register-btn {
+  margin-top: 0px;
 }
