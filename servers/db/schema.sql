@@ -16,3 +16,17 @@ create table if not exists logs (
     signin_time datetime not null,
     client_IP varchar(50) not null
 );
+
+
+
+create table if not exists questions {
+    questionid int not null auto_increment primary key,
+    topicid int not null,
+    questionbody varchar(255)
+};
+
+create table if not exists answers {
+    questionid int not null,
+    userid int not null,
+    answer boolean not null
+};
