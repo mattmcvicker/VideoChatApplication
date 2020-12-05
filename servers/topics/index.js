@@ -16,6 +16,8 @@ const {
     deleteSpecificTopicsHandler,
     patchSpecificTopicsHandler } = require('./handlers/topicsIDHandler')
 
+const { methodNotAllowedHandler } = require('./handlers/405handler');
+
 const addr = process.env.ADDR || ":80";
 
 var con = mysql.createConnection({
@@ -46,13 +48,17 @@ const RequestWrapper = (handler, SchemeAndDbForwarder) => {
     }
 }
 //Topics handlers
-app.get("/v1/topics", RequestWrapper(getTopicsHandler, { Topic }));
-app.post("/v1/topics", RequestWrapper(postTopicsHandler, { Topic }));
+app.route("/v1/topics")
+    .get(RequestWrapper(getTopicsHandler, { Topic }))
+    .post(RequestWrapper(postTopicsHandler, { Topic }))
+    .all(methodNotAllowedHandler);
 
 //Topics by ID handlers
-app.get("/v1/topics/:topicID", RequestWrapper(getSpecificTopicsHandler, { Topic }));
-app.patch("/v1/topics/:topicID", RequestWrapper(patchSpecificTopicsHandler, { Topic, con }));
-app.delete("/v1/topics/:topicID", RequestWrapper(deleteSpecificTopicsHandler, { Topic }));
+app.route("/v1/topics/:topicID")
+    .get(RequestWrapper(getSpecificTopicsHandler, { Topic }))
+    .patch(RequestWrapper(patchSpecificTopicsHandler, { Topic, con }))
+    .delete(RequestWrapper(deleteSpecificTopicsHandler, { Topic }))
+    .all(methodNotAllowedHandler);
 
 connect()
 mongoose.connection.on('error', console.error)
