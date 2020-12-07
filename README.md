@@ -5,7 +5,7 @@ Our target audience is people who want to have an open debate about specific sub
 Our audience wants to use this application because they want to learn more about other sides of issues that they care about. It’s very easy to get into an echo chamber when it comes to important topics, so by actually talking with someone who has an opinion different from their own, our audience can educate themselves on the opposite side, and even learn more about their own stance. 
 	We want to build this application because we feel that it could be a good way for people who have differing ideologies on a topic to understand the underlying thoughts that a person with a different opinion on the subject matter might have. It would also use a lot of the techniques we have learned in this class.
 
-### Technical Description (Diagram in link above)
+### Technical Description
 | Priority | User                                | Description |
 |----------|-------------------------------------|-------------|
 | P0       | As a user                           | I want to be able to sign into my account with all my topics and opinions already saved|
@@ -23,11 +23,6 @@ Users will be able to search topics, or view some of the more popular topics on 
 Users will be able to set their opinion on a particular topic as “neutral,” and that will be saved to their profile in the MySQL database. Then people will get matched to people who feel strongly about one side or other of the topic.
 Users will be able to create their own topics, asking different questions for different opinions, and have people answer those questions and get matched accordingly. These topics will be stored in the MySQL database.
 
-### Endpoints: 
-See Link Above
-
-### MYSQL:
-See Link Above
 
 
 
