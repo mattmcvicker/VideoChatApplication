@@ -1,20 +1,28 @@
 "use strict"; //disables several forgiving JavaScript features that make it very easy to introduce subtle bugs
 const mysql = require('mysql2');
 require('mysql2/promise');
-const express = require("express");
+const express = require('express');
 //const morgan = require("morgan");
-const mongoose = require('mongoose')
-const { topicSchema } = require('./schemas')
+const mongoose = require('mongoose');
+
+const { topicSchema, quizSchema, answerSchema } = require('./schemas');
 
 const { 
     getTopicsHandler, 
-    postTopicsHandler } = require('./handlers/topicsHandler')
+    postTopicsHandler } = require('./handlers/topicsHandler');
 
 
 const { 
     getSpecificTopicsHandler, 
     deleteSpecificTopicsHandler,
-    patchSpecificTopicsHandler } = require('./handlers/topicsIDHandler')
+    patchSpecificTopicsHandler } = require('./handlers/topicsIDHandler');
+
+const {
+    getSpecificQuizHandler,
+    postQuizHandler,
+    patchQuizHandler,
+    deleteQuizHandler,
+    postAnswerHandler } = require('./handlers/quizHandler');
 
 const addr = process.env.ADDR || ":80";
 
@@ -32,7 +40,11 @@ con.connect(function(err) {
 
 const mongoEndpoint = 'mongodb://mongocontainer:27017/mongoDB' // we define the schema inside the code
 const [host, port] = addr.split(":")
-const Topic = mongoose.model("Topic", topicSchema)
+
+const Topic = mongoose.model("Topic", topicSchema);
+const Quiz = mongoose.model("Quiz", quizSchema);
+const Answer = mongoose.model("Answer", answerSchema);
+
 const app = express();
 app.use(express.json()); // add JSON request body parsing middleware -- middleware handler function that parses JSON in request body
 
@@ -54,7 +66,18 @@ app.get("/v1/topics/:topicID", RequestWrapper(getSpecificTopicsHandler, { Topic 
 app.patch("/v1/topics/:topicID", RequestWrapper(patchSpecificTopicsHandler, { Topic, con }));
 app.delete("/v1/topics/:topicID", RequestWrapper(deleteSpecificTopicsHandler, { Topic }));
 
-connect()
+// quiz handlers
+app.route("/v1/topics/:topicID/quiz")
+    .get(RequestWrapper(getSpecificQuizHandler, { Topic, Quiz }))
+    .post(RequestWrapper(postQuizHandler, { Topic, Quiz }))
+    .patch(RequestWrapper(patchQuizHandler, { Topic, Quiz }))
+    .delete(RequestWrapper(deleteQuizHandler, { Topic, Quiz }));
+
+// take quiz handler
+app.route("/v1/topics/:topicID/quiz/take")
+    .post(RequestWrapper(postAnswerHandler, { Topic, Quiz, Answer }))
+
+connect();
 mongoose.connection.on('error', console.error)
     .on("disconnected", connect)
     .once('open', main)
