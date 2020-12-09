@@ -13,7 +13,7 @@ var pcConfig = {
     'urls': 'stun:stun.l.google.com:19302'
   }]
 };
-
+console.log(icecream)
 // Set up audio and video regardless of what devices are present.
 var sdpConstraints = {
   offerToReceiveAudio: true,
@@ -23,8 +23,24 @@ var sdpConstraints = {
 /////////////////////////////////////////////
 
 // Don't want to prompt, want to set on our own, has to be unique?
-var room = prompt('Enter room name:');
+//var room = prompt('Enter room name:');
 
+// Get auth headers and get room data///////////////////////
+var room;
+let myHeaders = new Headers();
+myHeaders.append('Content-Type', 'application/json');
+myHeaders.append("Authorization", localStorage.getItem("Authorization"));
+const myInit = {
+  method: 'POST',
+  headers: myHeaders,
+  mode: 'cors',
+  cache: 'default'
+}
+fetch("http://localhost.com/8080", myInit).then(function(response) {
+  console.log(response) 
+  room = response;
+});
+////////////////////////////////////////////////////////////////////
 var socket = io.connect();
 
 if (room !== '') {
