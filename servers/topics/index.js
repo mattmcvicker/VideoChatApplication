@@ -24,6 +24,10 @@ const {
     deleteQuizHandler,
     postAnswerHandler } = require('./handlers/quizHandler');
 
+const {
+    postQueueHandler,
+    deleteQueueHandler} = require('./handlers/queuesHandler')
+
 const addr = process.env.ADDR || ":80";
 
 var con = mysql.createConnection({
@@ -65,6 +69,10 @@ app.post("/v1/topics", RequestWrapper(postTopicsHandler, { Topic }));
 app.get("/v1/topics/:topicID", RequestWrapper(getSpecificTopicsHandler, { Topic }));
 app.patch("/v1/topics/:topicID", RequestWrapper(patchSpecificTopicsHandler, { Topic, con }));
 app.delete("/v1/topics/:topicID", RequestWrapper(deleteSpecificTopicsHandler, { Topic }));
+
+// Queue Handlers
+app.post("/v1/queue", RequestWrapper(postQueueHandler, { Topic, con }));
+app.delete("/v1/queue", RequestWrapper(deleteQueueHandler, { Topic }));
 
 // quiz handlers
 app.route("/v1/topics/:topicID/quiz")
