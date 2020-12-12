@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        const ROOM_ID = "<%= roomId %>"
+    </script>
+    <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js" defer></script>
+    <script src="/socket.io/socket.io.js" defer></script>
+    <script src="script.js" defer></script>
+    <script src="signin-signup.js" defer></script>
+    <title>Document</title>
+    <style>
+        #video-grid {
+            display: grid;
+            grid-template-columns: repeat(autofill, 300px);
+            grid-auto-rows: 300px;
+        }
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+        
+        video {
+            max-width: 100%;
+            width: 320px;
+        }
+        
+        /* start signin / signup styling */
+        input {
+            display: block;
+            padding: 8px;
+            margin: 10px 0 10px 0;
+        }
+        .btn-container button {
+            display: block;
+            padding: 5px;
+            margin-top: 20px;
+        }
+        button.btn-link {
+            background: none!important;
+            border: none;
+            text-decoration: underline;
+        }
+        
+        /* end signin / signup styling */
+        
+        .hidden {
+            display: none;
+        }
+  
+    </style>
+</head>
+<body>
+    <h1>WeFeud</h1>
+      <!-- sign in form -->
+    <div id="signin">
+        <form id="signin-form">
+        <label for="signin-email">Email: </label>
+        <input id="signin-email" type="email" required>
+
+        <label for="signin-password">Password: </label>
+        <input id="signin-password" type="password" required>  
+        
+        <div class="btn-container">
+            <button id="signin-btn" type="submit">Sign in</button>
+            <button id="signup-instead-btn" type="button" class="btn-link">Sign up instead</button>
+        </div>
+        </form>
+    </div>
+     <!-- sign up form -->
+    <div id="signup" class="hidden">
+        <form id="signup-form">
+        <label for="signup-email">Email:</label>
+        <input id="signup-email" type="email" required>
+
+        <label for="signup-username">Username:</label>
+        <input id="signup-username" type="text" required>
+
+        <label for="signup-fname">First Name:</label>
+        <input id="signup-fname" type="text" required>
+
+        <label for="signup-lname">Last Name:</label>
+        <input id="signup-lname" type="text" required>
+
+        <label for="signup-password">Password:</label>
+        <input id="signup-password" type="password" required>
+
+        <label for="signup-passwordConf">Confirm Password:</label>
+        <input id="signup-passwordConf" type="password" required>    
+
+        <button id="signup-btn" type="submit">Sign up</button>
+        </form>
+    </div>
+    <div id="queue" class="hidden">
+        <button id="queue-button">Start Debating!</button>
+    </div>
+    <div id="video-grid" class="hidden"></div>
+</body>
+</html>

@@ -29,6 +29,8 @@ func main() {
 	if len(redisAddr) == 0 {
 		redisAddr = "127.0.0.1:6379"
 	}
+	tlsKeyPath := os.Getenv("TLSKEY")
+	tlsCertPath := os.Getenv("TLSCERT")
 	// read in full data source name
 	dsn := os.Getenv("DSN")
 
@@ -52,23 +54,17 @@ func main() {
 
 	context := handlers.NewHandlerContext(sessKey, redisStore, sqlStore)
 
-	mux2 := http.NewServeMux()
-
 	// define handlers for users and sessions resources
-	mux2.HandleFunc("/v1/users", context.UsersHandler)
-	mux2.HandleFunc("/v1/users/", context.SpecificUserHandler)
-	mux2.HandleFunc("/v1/sessions", context.SessionsHandler)
-	mux2.HandleFunc("/v1/sessions/", context.SpecificSessionHandler)
+	mux.HandleFunc("/v1/users", context.UsersHandler)
+	mux.HandleFunc("/v1/users/", context.SpecificUserHandler)
+	mux.HandleFunc("/v1/sessions", context.SessionsHandler)
+	mux.HandleFunc("/v1/sessions/", context.SpecificSessionHandler)
+	//mux.HandleFunc("/v1/queue", )
+	mux.HandleFunc("/test", handlers.HandleTestPath)
 
 	// wrap api
-	wrappedMux := handlers.NewCORS(mux2)
-
-	// add to main mux
-	mux.Handle("/v1/users", wrappedMux)
-	mux.Handle("/v1/users/", wrappedMux)
-	mux.Handle("/v1/sessions", wrappedMux)
-	mux.Handle("/v1/sessions/", wrappedMux)
+	wrappedMux := handlers.NewCORS(mux)
 
 	// start web server; report any errors
-	log.Fatal(http.ListenAndServe(addr, mux))
+	log.Fatal(http.ListenAndServeTLS(addr, tlsCertPath, tlsKeyPath, wrappedMux))
 }

@@ -3,8 +3,9 @@
 # for your Go API gateway server
 
 # create an image from apline
-FROM alpine:latest
+FROM alpine
 
+RUN apk add --no-cache ca-certificates
 # copy over Go executable
 COPY gateway gateway
 

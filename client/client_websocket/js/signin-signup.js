@@ -2,7 +2,7 @@
     "use strict";
 
     //functionality for user signins/signups
-    const apibase = "http://localhost:80";
+    const apibase = "https://api.kenmasumoto.me";
     const userHandler = "/v1/users";
     const myUserHandler = "/v1/users/me";
     const sessionHandler = "/v1/sessions";

@@ -244,3 +244,8 @@ func LogUser(h *HandlerContext, r *http.Request, u *users.User) error {
 	h.UserStore.Log(u.ID, time.Now(), ip)
 	return nil
 }
+
+//HandleTestPath handles
+func HandleTestPath(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Test"))
+}

@@ -13,7 +13,6 @@ var pcConfig = {
     'urls': 'stun:stun.l.google.com:19302'
   }]
 };
-console.log(icecream)
 // Set up audio and video regardless of what devices are present.
 var sdpConstraints = {
   offerToReceiveAudio: true,
@@ -36,7 +35,8 @@ const myInit = {
   mode: 'cors',
   cache: 'default'
 }
-fetch("http://localhost.com/8080", myInit).then(function(response) {
+//TODO: Find out what endpoint returns the room name
+fetch("https://api.kenmasumoto.me/v1/queue", myInit).then(function(response) {
   console.log(response) 
   room = response;
 });
