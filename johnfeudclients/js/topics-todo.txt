@@ -1,0 +1,46 @@
+
+/////////////
+Topics
+/////////////
+
+big behavior:
+
+on load:
+- fetch GET api/v1/topics.
+- append each item from list of topics to the div called topic-list.
+- {OPTIONAL} sort appending of topics by num likes - num dislikes
+
+"add new topic" button is pressed:
+- set topic list to "d-none"
+- remove d-none from topic form.
+
+topic item contains:
+- class: row
+- topic title
+- topic author
+- discussion button
+- upvote/downvote button
+
+/////////////////
+
+smaller behavior:
+
+discuss button:
+- send to /quiz.html with appropriate information.
+
+"like-btn-{topicid}" or "dislike-btn-{topicid}" is pressed.
+- patch topic.
+- remove topic.
+- reload entire topic list.
+
+
+////////////
+Quiz
+///////////
+
+fetch topicid the same way you manage user state?
+set topic name to correct topic.
+
+get answer on form.
+send to room.
+
