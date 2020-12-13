@@ -47,7 +47,10 @@ function startCall() {
     })
 
     socket.on('user-disconnected', userId => {
-        if (peers[userId]) peers[userId].close
+        if (peers[userId]) {
+            peers[userId].close
+            console.log("Video closed?")
+        }
     })
 
     // when myPeer is created, sends out a 'join-room' event with the
@@ -73,6 +76,7 @@ function startCall() {
         // when a user closes the call, their video is removed
         call.on('close', () => {
             video.remove()
+            console.log("Video should be closed")
         })
 
         // puts the call in the peers object mapped to the correct
