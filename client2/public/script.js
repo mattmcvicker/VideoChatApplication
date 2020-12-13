@@ -1,14 +1,11 @@
 function startCall() {
-    const socket = io('/')
+    const socket = io('kenmasumoto.me')
     const videoGrid = document.getElementById('video-grid')
 
     // create a new Peer using the Peerjs library
     // undefined is where the userID goes, if undefined,
     // then the Peer autogenerates it
-    const myPeer = new Peer(undefined, {
-        host: '/',
-        port: '3001'
-    })
+    const myPeer = new Peer(undefined, {})
 
     // creates a video html object and mutes it (only mutes it for 
     // ourselves, so prevent echo)
