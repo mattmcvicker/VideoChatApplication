@@ -24,6 +24,7 @@ document.querySelector("#submit-button").addEventListener("click",
 
 
         //post the new topic
+        //generatetopiclist()
     }
 );
 ///////////
@@ -39,9 +40,9 @@ document.querySelector("#form-back-button").addEventListener("click",
 //button helpers
 function toggleVisibilty() {
     listsection.classList.toggle("d-none")
-        listsection2.classList.toggle("d-none")
-        formsection.classList.toggle("d-none")
-        document.querySelector("#postbtn").classList.toggle("d-none")
+    listsection2.classList.toggle("d-none")
+    formsection.classList.toggle("d-none")
+    document.querySelector("#postbtn").classList.toggle("d-none")
 }
 
 function generateTopicList(){
@@ -75,7 +76,7 @@ function generateTopicList(){
 generateTopicList()
 
 
-
+///
 
 //create a topic item DOM object
 function topicitem(id, topicname, timecreated, topicauthor, likes) {
@@ -114,7 +115,7 @@ function topicitem(id, topicname, timecreated, topicauthor, likes) {
             document.querySelector("#topicname").textContent = topicname
             topicmain.classList.add("d-none")
             quizmain.classList.remove("d-none")
-
+            quizBtnEvents(id)
             //do stuff with quizzes
         }
     );
@@ -186,19 +187,20 @@ function buttonGen(content, c) {
 // Quiz
 
 
-function sendToRoom(topicID, quizResponse) {
+function quizBtnEvents(topicID) {
     let truebtn = document.querySelector("#truebtn")
     let falsebtn = document.querySelector("#falsebtn")
 
     truebtn.addEventListener("click",
         () => {
-            //add to queue as true
+            
+            //add to queue as true for topic topicid
         }
     );
 
     falsebtn.addEventListener("click",
         () => {
-            //add to queue as false for x topic
+            //add to queue as false for topic topicid
         }
     );
 
