@@ -35,15 +35,14 @@ document.querySelector("#form-back-button").addEventListener("click",
     }
 );
 
+
+//button helpers
 function toggleVisibilty() {
     listsection.classList.toggle("d-none")
         listsection2.classList.toggle("d-none")
         formsection.classList.toggle("d-none")
         document.querySelector("#postbtn").classList.toggle("d-none")
 }
-
-
-generateTopicList()
 
 function generateTopicList(){
     listsection.innerHTML = "";
@@ -69,6 +68,14 @@ function generateTopicList(){
     //     }
     // )
 }
+
+
+
+//on page init
+generateTopicList()
+
+
+
 
 //create a topic item DOM object
 function topicitem(id, topicname, timecreated, topicauthor, likes) {
