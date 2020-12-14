@@ -28,6 +28,20 @@ document.querySelector("#submit-button").addEventListener("click",
     }
 );
 ///////////
+//once you connect this to api, here is some auth stuff
+// const response = await fetch(apibase + myUserHandler, {
+//     headers: new Headers({
+//         "Authorization": localStorage.getItem("Authorization")
+//     })
+// });
+
+// if (response.status > 300) {
+//     alert("Unable to verify login. Logging out.");
+//     localStorage.setItem("Authorization", "");
+//     document.querySelector("body").innerHTML = ""
+// } else {
+//     let user = await response.json().then(()=>{generateTopicList()})
+// }
 
 
 document.querySelector("#form-back-button").addEventListener("click",
@@ -73,6 +87,22 @@ function generateTopicList(){
 
 
 //on page init
+//once you connect this to api, here is some auth stuff
+// const response = await fetch(apibase + myUserHandler, {
+//     headers: new Headers({
+//         "Authorization": localStorage.getItem("Authorization")
+//     })
+// });
+
+// if (response.status > 300) {
+//     alert("Unable to verify login. Logging out.");
+//     localStorage.setItem("Authorization", "");
+//     document.querySelector("body").innerHTML = ""
+// } else {
+//     let user = await response.json().then(()=>{generateTopicList()})
+// }
+
+
 generateTopicList()
 
 
@@ -84,8 +114,8 @@ function topicitem(id, topicname, timecreated, topicauthor, likes) {
     frame.classList.add("container", "jumbotron", "bg-dark", "text-light");
     
     //name
-    let titleframe = divWithClass(["row"])
-    let titlebody = divWithClass(["col"])
+    let titleframe = divWithClass("row")
+    let titlebody = divWithClass("col")
     let titlechild = document.createElement("h3")
     titlechild.textContent = topicname
 
@@ -94,7 +124,7 @@ function topicitem(id, topicname, timecreated, topicauthor, likes) {
 
     //info
     let infoframe = divWithClass(["row"])
-    let info = [divWithClass(["col"]), divWithClass(["col"]), divWithClass(["col"])]
+    let info = [divWithClass("col"), divWithClass("col"), divWithClass("col")]
     info[0].textContent = "Created by: " + topicauthor
     info[1].textContent = "at: " + timecreated.toString()
     info[2].textContent = "Likes: " + likes
@@ -162,14 +192,11 @@ function getFormattedDate(date) {
   }
 
 //for both these methods, c is the desired html class
+//for both these methods, c is the desired html class
 function divWithClass(c) {
     let div = document.createElement("div")
 
-    c.forEach(
-        (item) => {
-            div.classList.add(item)
-        }
-    )
+    div.setAttribute("class", c)
 
     return div
 }
