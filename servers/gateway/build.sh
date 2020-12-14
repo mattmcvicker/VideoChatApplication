@@ -16,7 +16,6 @@ export SESSIONKEY="testsessionkey"
 export REDISADDR=rServe:6379
 export MYSQL_ROOT_PASSWORD=sqlpassword
 export DSN=root:sqlpassword@tcp\(mysql:3306\)/mysql
-export FEUDADDR=fued-ms
 
 docker rm -f api-server
 docker rm -f rServe
@@ -46,6 +45,5 @@ docker run -d -p 443:443 \
 -e REDISADDR=$REDISADDR \
 -e SESSIONKEY=$SESSIONKEY \
 -e DSN=$DSN \
--e FEUDADDR=$FEUDADDR \
 -v /etc/letsencrypt:/etc/letsencrypt:ro \
 kjmasumo/servers # TODO: decide on docker image 
