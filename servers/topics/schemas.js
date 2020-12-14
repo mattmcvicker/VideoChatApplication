@@ -28,6 +28,7 @@ const Queue = new Schema({
     userID: {type: Number, required: true, unique: true},
     quizID: {type: Number, required: true, unique: false},
     quizAnswer: {type: Boolean, required: true, unique:false},
+    roomId: {type: String, required: true, unique: true},
     queueTime: {type: Date, required:true, unique:false}
 })
 

@@ -9,10 +9,3 @@ create table if not exists users (
     lastname varchar(128) not null,
     photourl varchar(128) not null
 );
-
-create table if not exists logs (
-    id int not null auto_increment primary key,
-    userid int not null,
-    signin_time datetime not null,
-    client_IP varchar(50) not null
-);

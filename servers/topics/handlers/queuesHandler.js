@@ -3,8 +3,8 @@ const postQueueHandler = async (req, res, { Queue, con }) => {
     try {
         const temp = JSON.parse(req.headers["x-user"]);
         var userID = temp.id;
-        var { quizID, quizAnswer } = req.body
-        if (!quizID) {
+        var { topicID, quizAnswer } = req.body
+        if (!topicID) {
             res.status(400).send("Must provide a quiz ID")
             return;
         }
@@ -14,11 +14,18 @@ const postQueueHandler = async (req, res, { Queue, con }) => {
             return;
         }
         const queuedAt = new Date();
-        const queueUsers = await Queue.find({quizID: quizID, quizAnswer: !quizAnswer});
+        const queueUsers = await Queue.find({topicID: topicID, quizAnswer: !quizAnswer});
+        var dt = new Date().getTime();
+        var roomId = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = (dt + Math.random()*16)%16 | 0;
+            dt = Math.floor(dt/16);
+            return (c=='x' ? r :(r&0x3|0x8)).toString(16);
+        });
         let queue = {
             userID,
-            quizID,
+            topicID,
             quizAnswer,
+            roomId,
             queuedAt
         };
         if (queueUsers.length == 0) {
@@ -34,12 +41,9 @@ const postQueueHandler = async (req, res, { Queue, con }) => {
         } else {
             let match = queueUsers[0];
             await Queue.remove({userID: match.userID})
-            let connectionInfo = {
-                user_1ID: userID,
-                user_2ID: match.userID
-            }
+            let roomId = match.roomId
             res.setHeader("content-type", "application/json")
-            res.status(201).json(connectionInfo)
+            res.status(201).json(roomId)
 
         }
     } catch(e) {

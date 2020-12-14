@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"net/http/httputil"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/go-redis/redis"
@@ -54,13 +56,31 @@ func main() {
 
 	context := handlers.NewHandlerContext(sessKey, redisStore, sqlStore)
 
+	topicsDirector := func(r *http.Request) {
+		currentState := &handlers.SessionState{}
+		_, err := sessions.GetState(r, context.SigningKey, context.SessionStore, currentState)
+		if err != nil {
+			fmt.Print("Not an authenticated user")
+			r.Header.Del("X-User")
+		} else {
+			r.Header.Set("X-User", "{id: "+strconv.FormatInt(currentState.User.ID, 10)+"}")
+		}
+
+		serverName := "topics"
+		r.Host = serverName
+		r.URL.Host = serverName
+		r.URL.Scheme = "https"
+	}
+
+	topicsProxy := &httputil.ReverseProxy{Director: topicsDirector}
+
 	// define handlers for users and sessions resources
 	mux.HandleFunc("/v1/users", context.UsersHandler)
 	mux.HandleFunc("/v1/users/", context.SpecificUserHandler)
 	mux.HandleFunc("/v1/sessions", context.SessionsHandler)
 	mux.HandleFunc("/v1/sessions/", context.SpecificSessionHandler)
-	//mux.HandleFunc("/v1/queue", )
-	mux.HandleFunc("/test", handlers.HandleTestPath)
+	mux.Handle("/v1/queue", topicsProxy)
+	mux.Handle("/v1/topics", topicsProxy)
 
 	// wrap api
 	wrappedMux := handlers.NewCORS(mux)
