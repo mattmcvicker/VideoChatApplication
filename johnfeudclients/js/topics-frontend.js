@@ -7,6 +7,9 @@ let quizmain = document.querySelector("#quiz-body")
 let formsection = document.querySelector("#topic-form-section")
 let listsection = document.querySelector("#topic-list")
 let listsection2 = document.querySelector("#topic-list-section")
+//for some reason using only one of listsection 1 or 2 didnt make the
+//page display properly
+
 let currentTopicID = -1
 let currentTopicName = ""
 
