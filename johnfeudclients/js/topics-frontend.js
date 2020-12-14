@@ -10,32 +10,38 @@ let listsection2 = document.querySelector("#topic-list-section")
 let currentTopicID = -1
 let currentTopicName = ""
 
+
+//Post a new topic Event listeners
 document.querySelector("#postbtn").addEventListener("click",
     () => {
-        listsection.classList.add("d-none")
-        listsection2.classList.add("d-none")
-        formsection.classList.remove("d-none")
-        document.querySelector("#postbtn").classList.add("d-none")
+        toggleVisibilty()
     }
 );
 
 document.querySelector("#submit-button").addEventListener("click",
     () => {
-        listsection.classList.remove("d-none")
-        listsection2.classList.remove("d-none")
-        formsection.classList.add("d-none")
-        document.querySelector("#postbtn").classList.remove("d-none")
+        toggleVisibilty()
+
+
+        //post the new topic
     }
 );
+///////////
+
 
 document.querySelector("#form-back-button").addEventListener("click",
     () => {
-        listsection.classList.remove("d-none")
-        listsection2.classList.remove("d-none")
-        formsection.classList.add("d-none")
-        document.querySelector("#postbtn").classList.remove("d-none")
+        toggleVisibilty()
     }
 );
+
+function toggleVisibilty() {
+    listsection.classList.toggle("d-none")
+        listsection2.classList.toggle("d-none")
+        formsection.classList.toggle("d-none")
+        document.querySelector("#postbtn").classList.toggle("d-none")
+}
+
 
 generateTopicList()
 
@@ -43,7 +49,7 @@ function generateTopicList(){
     listsection.innerHTML = "";
     //placeholder
 
-    //set date to right format
+    //set date to right format (got code from somewhere on the internet)
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -55,6 +61,7 @@ function generateTopicList(){
     for (var i = 0; i < 5; i++) {
         listsection.appendChild(topicitem(1, "Salads? "+i , today, "squidward69", 69))
     }
+
     //fetch topics, then for each topic,
     // response.forEach(
     //     (item) => {
@@ -65,7 +72,7 @@ function generateTopicList(){
 
 //create a topic item DOM object
 function topicitem(id, topicname, timecreated, topicauthor, likes) {
-    let frame = returndiv();
+    let frame = document.createElement("div")
     frame.classList.add("container", "jumbotron", "bg-dark", "text-light");
     
     //name
@@ -94,17 +101,18 @@ function topicitem(id, topicname, timecreated, topicauthor, likes) {
         buttonGen("Dislike", "col-2 btn m-1 btn-light", id)
     ];
 
-    //enter event listener
+    //ENTER btn event listener
     buttons[0].addEventListener("click", 
         () => {
-            currentTopicID = id
             document.querySelector("#topicname").textContent = topicname
             topicmain.classList.add("d-none")
             quizmain.classList.remove("d-none")
+
+            //do stuff with quizzes
         }
     );
     
-    //like event listener
+    //LIKE btn event listener
     buttons[1].addEventListener("click", 
         () => {
             //on click:
@@ -113,7 +121,7 @@ function topicitem(id, topicname, timecreated, topicauthor, likes) {
         }
     );
     
-    //dislike event listener
+    //DISLIKE btn event listener
     buttons[2].addEventListener("click", 
         () => {
             //on click:
@@ -131,6 +139,8 @@ function topicitem(id, topicname, timecreated, topicauthor, likes) {
     return frame
 }
 
+
+//helper methods
 function getFormattedDate(date) {
     var year = date.getFullYear();
   
@@ -142,13 +152,10 @@ function getFormattedDate(date) {
     
     return month + '/' + day + '/' + year;
   }
-  
-function returndiv() {
-    return document.createElement("div")
-}
 
+//for both these methods, c is the desired html class
 function divWithClass(c) {
-    let div = returndiv()
+    let div = document.createElement("div")
 
     c.forEach(
         (item) => {
@@ -169,3 +176,23 @@ function buttonGen(content, c) {
     return btn
 }
 
+// Quiz
+
+
+function sendToRoom(topicID, quizResponse) {
+    let truebtn = document.querySelector("#truebtn")
+    let falsebtn = document.querySelector("#falsebtn")
+
+    truebtn.addEventListener("click",
+        () => {
+            //add to queue as true
+        }
+    );
+
+    falsebtn.addEventListener("click",
+        () => {
+            //add to queue as false for x topic
+        }
+    );
+
+}
