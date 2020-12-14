@@ -193,7 +193,6 @@ function quizBtnEvents(topicID) {
 
     truebtn.addEventListener("click",
         () => {
-            
             //add to queue as true for topic topicid
         }
     );
