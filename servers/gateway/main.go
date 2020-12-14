@@ -2,9 +2,11 @@ package main
 
 import (
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
+	"net/http/httputil"
 	"os"
 	"time"
 
@@ -22,6 +24,8 @@ func main() {
 	if len(addr) == 0 {
 		addr = ":80"
 	}
+	// read in topic and quiz microservice address
+	feudAddress := os.Getenv("FEUDADDR")
 	// read in the session key
 	sessKey := os.Getenv("SESSIONKEY")
 	// read in the redisaddr
@@ -54,16 +58,44 @@ func main() {
 
 	context := handlers.NewHandlerContext(sessKey, redisStore, sqlStore)
 
+	// create new mux for cors middleware
+	mux2 := http.NewServeMux()
 	// define handlers for users and sessions resources
-	mux.HandleFunc("/v1/users", context.UsersHandler)
-	mux.HandleFunc("/v1/users/", context.SpecificUserHandler)
-	mux.HandleFunc("/v1/sessions", context.SessionsHandler)
-	mux.HandleFunc("/v1/sessions/", context.SpecificSessionHandler)
+	mux2.HandleFunc("/v1/users", context.UsersHandler)
+	mux2.HandleFunc("/v1/users/", context.SpecificUserHandler)
+	mux2.HandleFunc("/v1/sessions", context.SessionsHandler)
+	mux2.HandleFunc("/v1/sessions/", context.SpecificSessionHandler)
+	// wrap api
+	wrappedMux := handlers.NewCORS(mux2)
+	// add to main mux
+	mux.Handle("/v1/users", wrappedMux)
+	mux.Handle("/v1/users/", wrappedMux)
+	mux.Handle("/v1/sessions", wrappedMux)
+	mux.Handle("/v1/sessions/", wrappedMux)
 	//mux.HandleFunc("/v1/queue", )
 	mux.HandleFunc("/test", handlers.HandleTestPath)
 
-	// wrap api
-	wrappedMux := handlers.NewCORS(mux)
+	// define reverse proxy for topic and quiz microservice
+	feudDirector := func(r *http.Request) {
+		// check for authenticated user and add X-User header (with id)
+		if r.Header.Get("X-User") != "" {
+			r.Header.Set("X-User", "")
+		}
+		user, _ := handlers.GetAuthenticatedUser(context, r)
+		if user != nil {
+			// encode user into json
+			uJSON, _ := json.Marshal(user)
+			r.Header.Add("X-User", string(uJSON))
+		}
+
+		r.Host = feudAddress
+		r.URL.Host = feudAddress
+		r.URL.Scheme = "http"
+	}
+	feudProxy := &httputil.ReverseProxy{Director: feudDirector}
+	mux.Handle("/v1/topics", feudProxy)
+	mux.Handle("/v1/topics/", feudProxy)
+	mux.Handle("/v1/queue", feudProxy)
 
 	// start web server; report any errors
 	log.Fatal(http.ListenAndServeTLS(addr, tlsCertPath, tlsKeyPath, wrappedMux))
