@@ -30,21 +30,7 @@ document.querySelector("#submit-button").addEventListener("click",
         //generatetopiclist()
     }
 );
-///////////
-//once you connect this to api, here is some auth stuff
-// const response = await fetch(apibase + myUserHandler, {
-//     headers: new Headers({
-//         "Authorization": localStorage.getItem("Authorization")
-//     })
-// });
 
-// if (response.status > 300) {
-//     alert("Unable to verify login. Logging out.");
-//     localStorage.setItem("Authorization", "");
-//     document.querySelector("body").innerHTML = ""
-// } else {
-//     let user = await response.json().then(()=>{generateTopicList()})
-// }
 
 
 document.querySelector("#form-back-button").addEventListener("click",
@@ -158,7 +144,7 @@ function topicitem(id, topicname, timecreated, topicauthor, likes) {
         () => {
             //on click:
             //PATCH topic
-            //generateTopicList()
+            //await generateTopicList()
         }
     );
     
@@ -167,7 +153,7 @@ function topicitem(id, topicname, timecreated, topicauthor, likes) {
         () => {
             //on click:
             //PATCH topic
-            //generateTopicList()
+            //await generateTopicList()
         }
     );
 
