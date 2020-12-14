@@ -10,8 +10,13 @@ let listsection2 = document.querySelector("#topic-list-section")
 //for some reason using only one of listsection 1 or 2 didnt make the
 //page display properly
 
-let currentTopicID = -1
-let currentTopicName = ""
+const apibase = "https://api.kenmasumoto.me";
+const host = "https://kenmasumoto.me"
+const userHandler = "/v1/users";
+const myUserHandler = "/v1/users/me";
+const sessionHandler = "/v1/sessions";
+const specificTopicHandler = "/v1/topics/";
+const topicHandler = "v1/topics"
 
 
 //Post a new topic Event listeners
@@ -23,11 +28,36 @@ document.querySelector("#postbtn").addEventListener("click",
 
 document.querySelector("#submit-button").addEventListener("click",
     () => {
-        toggleVisibilty()
-
+        let input = document.querySelector("#topic-name").value
+        let fetchbody = {name:input}
 
         //post the new topic
-        //generatetopiclist()
+        fetch(
+            apibase + topicHandler,
+            {
+                method:"POST",
+                headers: {
+                    "x-user":user,
+                    "Authorization":auth,
+                    "Content-Type": "application/json"
+                },
+                body:JSON.stringify(fetchbody)
+            }
+        ).then(
+            () =>{
+                generateTopicList().then(
+                    () => {
+                        toggleVisibilty()
+                    }
+                )
+            }
+        ).catch(
+            (response) => {
+                if (response.status > 300) {
+                    return
+                }
+            }
+        )
     }
 );
 
@@ -48,48 +78,77 @@ function toggleVisibilty() {
     document.querySelector("#postbtn").classList.toggle("d-none")
 }
 
-function generateTopicList(){
+async function generateTopicList(){
     listsection.innerHTML = "";
-    //placeholder
+    // //placeholder topics
 
-    //set date to right format (got code from somewhere on the internet)
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    var yyyy = today.getFullYear();
+    // //set date to right format (got code from somewhere on the internet)
+    // var today = new Date();
+    // var dd = String(today.getDate()).padStart(2, '0');
+    // var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    // var yyyy = today.getFullYear();
 
-    today = mm + '/' + dd + '/' + yyyy;
+    // today = mm + '/' + dd + '/' + yyyy;
 
     
-    for (var i = 0; i < 5; i++) {
-        listsection.appendChild(topicitem(1, "Salads? "+i , today, "squidward69", 69))
-    }
+    // for (var i = 0; i < 5; i++) {
+    //     listsection.appendChild(topicitem(1, "Salads? "+i , today, "squidward69", 69))
+    // }
 
-    //fetch topics, then for each topic,
-    // response.forEach(
+
+    
+    fetch(
+        apibase + topicHandler,
+        {
+            method:"GET",
+            headers: {
+                "x-user":user,
+                "Authorization":auth,
+                "Content-Type": "application/json"
+            }
+        }
+    ).then(
+        (response) => {
+            response.forEach(
+                (item) => {
+                    listsection.appendChild(topicitem(item.id, item.name, getFormattedDate(item.createdAt), item.creator, item.votes))
+                }
+            )
+        }
+    ).catch(
+        (response) => {
+            if (response.status > 300) {
+                return
+            }
+        }
+    )
+    
+    // .forEach(
     //     (item) => {
     //         listsection.appendChild(topicitem(item.id, item.name, item.createdAt, item.creator, item.votes))
     //     }
     // )
 }
 
+const auth = localStorage.getItem("Authorization")
 
+// on page init
+// once you connect this to api, here is some auth stuff
+const response = await fetch(apibase + myUserHandler, {
+    headers: new Headers({
+        "Authorization": auth
+    })
+});
 
-//on page init
-//once you connect this to api, here is some auth stuff
-// const response = await fetch(apibase + myUserHandler, {
-//     headers: new Headers({
-//         "Authorization": localStorage.getItem("Authorization")
-//     })
-// });
+if (response.status > 300) {
+    alert("Unable to verify login. Logging out.");
+    localStorage.setItem("Authorization", "");
+    document.querySelector("body").innerHTML = ""
+} else {
+    let user = await response.json().then(()=>{generateTopicList()})
+}
 
-// if (response.status > 300) {
-//     alert("Unable to verify login. Logging out.");
-//     localStorage.setItem("Authorization", "");
-//     document.querySelector("body").innerHTML = ""
-// } else {
-//     let user = await response.json().then(()=>{generateTopicList()})
-// }
+const header = JSON.stringify(user)
 
 
 generateTopicList()
@@ -124,8 +183,8 @@ function topicitem(id, topicname, timecreated, topicauthor, likes) {
     let buttonframe = divWithClass(["row"])
     let buttons = [
         buttonGen("Enter", "col-7 btn m-1 btn-primary", id),
-        buttonGen("Like", "col-2 btn m-1 btn-light", id),
-        buttonGen("Dislike", "col-2 btn m-1 btn-light", id)
+        buttonGen("Upvote", "col-2 btn m-1 btn-light", id)
+        //buttonGen("Dislike", "col-2 btn m-1 btn-light", id)
     ];
 
     //ENTER btn event listener
@@ -135,7 +194,6 @@ function topicitem(id, topicname, timecreated, topicauthor, likes) {
             topicmain.classList.add("d-none")
             quizmain.classList.remove("d-none")
             quizBtnEvents(id)
-            //do stuff with quizzes
         }
     );
     
@@ -144,18 +202,32 @@ function topicitem(id, topicname, timecreated, topicauthor, likes) {
         () => {
             //on click:
             //PATCH topic
+            fetch(
+                apibase + specificTopicHandler + id,
+                {
+                    method:"PATCH",
+                    headers: {
+                        "x-user":user,
+                        "Authorization":auth,
+                        "Content-Type": "application/json"
+                    }
+                }
+            ).then(
+                () => {
+                    generateTopicList();
+                }
+            ).catch(
+                (response) => {
+                    if (response.status > 300) {
+                        return
+                    }
+                }
+            )
             //await generateTopicList()
         }
     );
     
-    //DISLIKE btn event listener
-    buttons[2].addEventListener("click", 
-        () => {
-            //on click:
-            //PATCH topic
-            //await generateTopicList()
-        }
-    );
+    
 
     buttons.forEach((item)=>{buttonframe.appendChild(item)})
     
@@ -180,7 +252,7 @@ function getFormattedDate(date) {
     return month + '/' + day + '/' + year;
   }
 
-//for both these methods, c is the desired html class
+
 //for both these methods, c is the desired html class
 function divWithClass(c) {
     let div = document.createElement("div")
@@ -201,22 +273,64 @@ function buttonGen(content, c) {
 }
 
 // Quiz
-
-
 function quizBtnEvents(topicID) {
     let truebtn = document.querySelector("#truebtn")
     let falsebtn = document.querySelector("#falsebtn")
-
+    
     truebtn.addEventListener("click",
+
+        //queue stuff
         () => {
-            //add to queue as true for topic topicid
+            let thisbody = {topicId: topicID, quizAnswer: true}
+            const response = await fetch(
+                apibase + queueHandler,
+                {method:"POST",
+                headers:{
+                    "X-User": header,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(thisbody)}
+            ).then(
+                (response) => {
+                    window.location.href = host + "/room/" + response;
+                }
+            ).catch(
+                () => {
+                    if (response.status >= 300) {
+                        return
+                    }
+                }
+            )
         }
+        
+        
     );
 
     falsebtn.addEventListener("click",
         () => {
-            //add to queue as false for topic topicid
+            let thisbody = {topicId: topicID, quizAnswer: false}
+            const response = await fetch(
+                apibase + queueHandler,
+                {method:"POST",
+                headers:{
+                    "X-User": header,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(thisbody)}
+            ).then(
+                //redirect
+                (response) => {
+                    window.location.href = host + "/room/" + response;
+                }
+            ).catch(
+                (response) => {
+                    if (response.status >= 300) {
+                        return
+                    }
+                }
+            )
         }
+        
     );
 
 }
