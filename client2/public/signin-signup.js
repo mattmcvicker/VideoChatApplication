@@ -14,18 +14,20 @@
     var signinPage = document.getElementById("signin");
     var queuePage = document.getElementById("queue");
     var videoPage = document.getElementById("video-grid");
+    var topicsPage = document.getElementById("topics-body");
 
     function initialize() {
         // check if there is a user currently signed in
-        getCurrentUser();
-        // define event listeners
-        document.getElementById("signup-form").addEventListener("submit", signup);
-        document.getElementById("signin-form").addEventListener("submit", signin);
-        document.getElementById("signup-instead-btn").addEventListener("click", showSignup);
-        document.getElementById("queue-button").addEventListener("click", function(){
-            videoPage.classList.remove("hidden");
-            queuePage.classList.add("hidden")
-            startCall();
+        getCurrentUser().then( () => {
+            // define event listeners
+            document.getElementById("signup-form").addEventListener("submit", signup);
+            document.getElementById("signin-form").addEventListener("submit", signin);
+            document.getElementById("signup-instead-btn").addEventListener("click", showSignup);
+            document.getElementById("queue-button").addEventListener("click", function(){
+                videoPage.classList.remove("hidden");
+                queuePage.classList.add("hidden")
+                startCall();
+            });
         })
     }
 
@@ -44,10 +46,12 @@
         if (response.status > 300) {
             alert("Unable to verify login. Logging out.");
             localStorage.setItem("Authorization", "");
+            showSignup()
+            return;
+        }else {
+            user = await response.json();
+            showTopics();
         }
-        // get user
-        user = await response.json();
-        showQueueStart();
     }
 
     async function signup(e) {
@@ -88,7 +92,8 @@
         // get user 
         user = await response.json();
 
-        showQueueStart();
+        topicsInit();
+        showTopics();
     }
 
     async function signin(e) {
@@ -120,8 +125,14 @@
 
         // get user 
         user = await response.json();
+        topicsInit();
+        showTopics();
 
-        showQueueStart();
+    }
+
+    async function showSignin() {
+        signupPage.classList.add("hidden");
+        signinPage.classList.remove("hidden")
     }
 
     async function showSignup() {
@@ -129,10 +140,10 @@
         signupPage.classList.remove("hidden");
     }
 
-    async function showQueueStart() {
+    async function showTopics() {
         signinPage.classList.add("hidden");
         signupPage.classList.add("hidden");
-        queuePage.classList.remove("hidden");
+        topicsPage.classList.remove("hidden");
     }
 
     async function showVideos() {

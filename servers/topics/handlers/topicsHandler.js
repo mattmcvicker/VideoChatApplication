@@ -13,13 +13,9 @@ const postTopicsHandler = async (req, res, { Topic }) => {
         const temp = req.headers["x-user"];
         var ID = temp;
         ID = ID.split("id: ")[1].split("}")[0];
-        var { name, questions } = req.body
+        var { name } = req.body
         if (!name) {
             res.status(400).send("Must provide a name for the Topic")
-            return;
-        }
-        if (!questions) {
-            res.status(400).send("Must provide question(s) for the Topic")
             return;
         }
         
@@ -31,8 +27,7 @@ const postTopicsHandler = async (req, res, { Topic }) => {
 
         topic = {
             name,
-            questions,
-            votes: new Set(),
+            votes: [],
             createdAt,
             creator: ID,
             editedAt

@@ -10,6 +10,9 @@
     <script src="/socket.io/socket.io.js" defer></script>
     <script src="script.js" defer></script>
     <script src="signin-signup.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css">
+    <!-- Bootstrap for styling -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <title>Document</title>
     <style>
         #video-grid {
@@ -60,6 +63,7 @@
 </head>
 <body>
     <h1>WeFeud</h1>
+
       <!-- sign in form -->
     <div id="signin">
         <form id="signin-form">
@@ -75,6 +79,7 @@
         </div>
         </form>
     </div>
+
      <!-- sign up form -->
     <div id="signup" class="hidden">
         <form id="signup-form">
@@ -99,9 +104,80 @@
         <button id="signup-btn" type="submit">Sign up</button>
         </form>
     </div>
+
+    <!-- Start of topics section -->
+    <div id=topics-body class="hidden">
+        <div class="header row mt-3" id="topictitle">
+            <h1>Topics</h1> 
+        </div>
+        <div class="container jumbotron row">
+            <div id="topic-list-section" class="row">
+                <h2>Topic List:</h2>
+            <div id="topic-list" class=container>
+                <!-- example topic -->
+                <div class="container jumbotron bg-dark text-light">
+                    <div class="row">
+                        <div class="col"><h3>Topic Name</h3></div>
+                    </div>
+                    <div class="row">
+                        <div class="col">Created by: {creator name}</div>
+                        <div class="col">at: {time created}</div>
+                        <div class="col">Likes: {num likes}</div>
+                    </div>
+                    <div class="row">
+                        <button id="enterbtn-{topicid}" class="col-7 btn m-1 btn-primary">Enter</button>
+                        <button id="likebtn-{topicid}" class="col-2 btn m-1 btn-light">Like</button>
+                        <button id="dislikebtn-{topicid}" class="col-2 btn m-1 btn-light">Dislike</button>
+                    </div>
+                </div>
+                <!-- example topic end -->
+    
+            </div>
+    
+                <button id="postbtn" class="btn btn-primary">Post a topic</button>
+            
+        </div>
+    
+            
+        <div id="topic-form-section" class="row d-none">
+                <form id="topic-form" class="form" novalidate>
+                    <div class="form-group row">
+                      <label for="topicname" class="col">Topic Name</label>
+                      <div class="col">
+                        <input type="topic-name" id="topic-name" class="form-control" required>
+                      </div>
+                    </div>               
+                    <button id="submit-button" type="submit" class="btn btn-primary">Submit</button>
+                    <button id="form-back-button" type="back" class="btn btn-danger">Back</button>
+                </form>
+                
+        </div>
+    
+        </div>
+    </div>
+
+    <div id="quiz-body" class="d-none">
+        <div class="header mt-3" id="topictitle">
+            <h1 id=topicname>{TopicName}</h1> 
+        </div>
+            
+        <div class="container p-2 jumbotron jumbotron-fluid">
+            <div class="row"><h2 class="text-center col">Choose your side</h2></div>
+            <div class="row p-4">
+            <button id="truebtn" class="col btn m-2 btn-dark">true</button>
+            <button id="falsebtn" class="col btn m-2 btn-dark">false</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Queue button -->
     <div id="queue" class="hidden">
         <button id="queue-button">Start Debating!</button>
     </div>
+    <!-- Video Grid section -->
     <div id="video-grid" class="hidden"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="topics-frontend.js"></script>
 </body>
 </html>

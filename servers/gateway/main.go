@@ -69,7 +69,7 @@ func main() {
 		serverName := "topics"
 		r.Host = serverName
 		r.URL.Host = serverName
-		r.URL.Scheme = "https"
+		r.URL.Scheme = "http"
 	}
 
 	topicsProxy := &httputil.ReverseProxy{Director: topicsDirector}
@@ -80,7 +80,9 @@ func main() {
 	mux.HandleFunc("/v1/sessions", context.SessionsHandler)
 	mux.HandleFunc("/v1/sessions/", context.SpecificSessionHandler)
 	mux.Handle("/v1/queue", topicsProxy)
+	mux.Handle("/v1/queue/", topicsProxy)
 	mux.Handle("/v1/topics", topicsProxy)
+	mux.Handle("/v1/topics/", topicsProxy)
 
 	// wrap api
 	wrappedMux := handlers.NewCORS(mux)

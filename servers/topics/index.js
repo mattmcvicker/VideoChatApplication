@@ -31,10 +31,10 @@ const {
 const addr = process.env.ADDR || ":80";
 
 var con = mysql.createConnection({
-    host: "441sqldb",
+    host: "mysql",
     user: "root",
-    password: "mysqlrootpassword",
-    database: "wefeuddb"
+    password: "sqlpassword",
+    database: "mysql"
 });
 
 con.connect(function(err) {

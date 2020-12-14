@@ -24,14 +24,13 @@ app.set('view engine', 'ejs')
 app.use(express.static('public'))
 
 // the default path, redirects you do randomly generated room
-app.get('/rooms/', (req, res) => {
-    var roomId = req.headers('roomId')
-    //res.redirect(`/${uuidV4()}`)
-    res.redirect(`/rooms/${roomId}`)
+app.get('/', (req, res) => {
+    //var roomId = req.headers('roomId')
+    res.redirect(`/${uuidV4()}`)
 })
 
 // renders a room with the id in the path
-app.get('/rooms/:room', (req, res) => {
+app.get('/:room', (req, res) => {
     res.render('room', { roomId: req.params.room })
 })
 
