@@ -50,6 +50,7 @@
             return;
         }else {
             user = await response.json();
+            topicsInit();
             showTopics();
         }
     }

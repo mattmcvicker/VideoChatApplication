@@ -1,15 +1,24 @@
 
+const getQueueHandler = async (req, res, { Queue }) => {
+    try{
+        const queue = await Queue.find({});
+        res.status(200).json(queue)
+    }catch(e) {
+
+    }
+}
+
 const postQueueHandler = async (req, res, { Queue, con }) => {
     try {
         const temp = JSON.parse(req.headers["x-user"]);
         var userID = temp.id;
         var { topicID, quizAnswer } = req.body
         if (!topicID) {
-            res.status(400).send("Must provide a quiz ID")
+            res.status(400).send("Must provide a topic ID")
             return;
         }
 
-        if (!quizAnswer) {
+        if (quizAnswer === undefined) {
             res.status(400).send("Must provide a quiz answer")
             return;
         }
@@ -36,14 +45,14 @@ const postQueueHandler = async (req, res, { Queue, con }) => {
                     return;
                 }
                 res.setHeader("content-type", "text/plain");
-                res.status(201).send("User put in queue successfully")
+                res.status(201).send(roomId)
             })
         } else {
             let match = queueUsers[0];
             await Queue.remove({userID: match.userID})
             let roomId = match.roomId
-            res.setHeader("content-type", "application/json")
-            res.status(201).json(roomId)
+            res.setHeader("content-type", "text/plain")
+            res.status(201).send(roomId)
 
         }
     } catch(e) {
@@ -69,4 +78,4 @@ const deleteQueueHandler = async (req, res, { Queue }) => {
     }
 }
 
-module.exports = { postQueueHandler, deleteQueueHandler }
+module.exports = { postQueueHandler, deleteQueueHandler, getQueueHandler }

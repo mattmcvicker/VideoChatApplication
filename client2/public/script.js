@@ -56,6 +56,9 @@ function startCall() {
     // when myPeer is created, sends out a 'join-room' event with the
     // given id
     myPeer.on('open', id => {
+        if (localStorage.getItem("roomID") != ""){
+            ROOM_ID = localStorage.getItem("roomID")
+        }
         socket.emit('join-room', ROOM_ID, id)
     })
 

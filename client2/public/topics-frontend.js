@@ -16,7 +16,8 @@ const userHandler = "/v1/users";
 const myUserHandler = "/v1/users/me";
 const sessionHandler = "/v1/sessions";
 const specificTopicHandler = "/v1/topics/";
-const topicHandler = "/v1/topics"
+const topicHandler = "/v1/topics";
+const queueHandler = "/v1/queue";
 
 
 //Post a new topic Event listeners
@@ -98,7 +99,7 @@ async function generateTopicList(){
     //     listsection.appendChild(topicitem(1, "Salads? "+i , today, "squidward69", 69))
     // }
 
-    
+    console.log("Topic List Being Generated")
     fetch(
         apibase + topicHandler,
         {
@@ -115,13 +116,16 @@ async function generateTopicList(){
         (response) => {
             response.forEach(
                 (item) => {
-                    listsection.appendChild(topicitem(item.id, item.name, getFormattedDate(item.createdAt), item.creator, item.votes))
+                    console.log(item)
+                    console.log(typeof item.createdAt)
+                    listsection.appendChild(topicitem(item._id, item.name, item.createdAt, item.creator, item.votes))
                 }
             )
         }
     ).catch(
         (response) => {
             if (response.status > 300) {
+                console.log(reponse)
                 return
             }
         }
@@ -152,7 +156,7 @@ async function topicsInit(){
             alert("Unable to verify login. Logging out.");
             localStorage.setItem("Authorization", "");
         } else {
-            user = response.json().then(()=>{generateTopicList()})
+            user = response.json()
             header = JSON.stringify(user)
             generateTopicList()
         }
@@ -327,7 +331,7 @@ function quizBtnEvents(topicID) {
 
         //queue stuff
         () => {
-            let thisbody = {topicId: topicID, quizAnswer: true}
+            let thisbody = {topicID: topicID, quizAnswer: true}
             fetch(
                 apibase + queueHandler,
                 {method:"POST",
@@ -341,9 +345,10 @@ function quizBtnEvents(topicID) {
                 }
             ).then(
                 (response) => {
-                    window.location.href = host + "/" + response;
+                    localStorage.setItem("roomID", response)
                     document.getElementById("quiz-body").classList.add("d-none")
                     document.getElementById("queue").classList.remove("hidden")
+                    console.log("Does this ever run?")
                 }
             ).catch(
                 () => {
@@ -359,7 +364,7 @@ function quizBtnEvents(topicID) {
 
     falsebtn.addEventListener("click",
         () => {
-            let thisbody = {topicId: topicID, quizAnswer: false}
+            let thisbody = {topicID: topicID, quizAnswer: false}
             fetch(
                 apibase + queueHandler,
                 {method:"POST",
@@ -374,9 +379,10 @@ function quizBtnEvents(topicID) {
             ).then(
                 //redirect
                 (response) => {
-                    window.location.href = host + "/" + response;
+                    localStorage.setItem("roomID", response)
                     document.getElementById("quiz-body").classList.add("d-none")
                     document.getElementById("queue").classList.remove("hidden")
+                    console.log("Does this ever run?")
                 }
             ).catch(
                 (response) => {

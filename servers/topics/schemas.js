@@ -16,13 +16,13 @@ const topicSchema = new Schema({
 //     createdAt: {type: Date}
 // })
 
-const Queue = new Schema({
+const queueSchema = new Schema({
     userID: {type: Number, required: true, unique: true},
-    topicID: {type: Number, required: true, unique: false},
+    topicID: {type: String, required: true, unique: false},
     quizAnswer: {type: Boolean, required: true, unique:false},
     roomId: {type: String, required: true, unique: true},
-    queueTime: {type: Date, required:true, unique:false}
+    queueTime: {type: Date, required:false, unique:false}
 })
 
-module.exports = { topicSchema, quizSchema, answerSchema, Queue }
+module.exports = { topicSchema, queueSchema }
 
