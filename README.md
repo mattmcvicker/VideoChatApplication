@@ -10,12 +10,8 @@ Our audience wants to use this application because they want to learn more about
 | Priority | User                                | Description |
 |----------|-------------------------------------|-------------|
 | P0       | As a user                           | I want to be able to sign into my account with all my topics and opinions already saved|
-| P0       | As a user                           | I want to be able to change the opinions I have set on my profile|
 | P0       | As a user                           | I want to be able to find other people with differing opinions on a specific topic|
 | P0       | As a user                           | I want to be able to look into new topics that I have not yet set and set my opinions on those topics|
-| P2       | As a user who is neutral on a topic | I want to be able to get matched with people who feel strongly about a particular side to educate myself on that topic|
-| P2       | As a teacher/user                   | I want to be able to create my own topics and prompts|
-
 
 Users will be able to sign into their account, which is stored in the MySQL database. Their opinion on topics is also stored in the MySQL database.
 Users will be able to change the opinions they have set on their profile, which are stored in the MySQL database.
