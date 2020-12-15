@@ -59,17 +59,6 @@ func main() {
 	topicsDirector := func(r *http.Request) {
 		currentState := &handlers.SessionState{}
 		_, err := sessions.GetState(r, context.SigningKey, context.SessionStore, currentState)
-		// if err != nil {
-		// 	fmt.Print("Not an authenticated user")
-		// 	r.Header.Del("X-User")
-		// } else {
-		// 	r.Header.Set("X-User", `{"id": `+strconv.FormatInt(currentState.User.ID, 10)+`}`)
-		// }
-		// userjson, err := json.Marshal(state.User)
-		// if err == nil {
-		// 	r.Header.Add("X-User", string(userjson))
-		// 	}
-		// }
 		if err != nil {
 			fmt.Print("Not an authenticated user")
 			r.Header.Del("X-User")

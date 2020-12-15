@@ -8,14 +8,6 @@ const topicSchema = new Schema({
     editedAt: {type: Date, required: false, unique: false}
 });
 
-
-// const answerSchema = new Schema({
-//     userid: {type: Number, required: true},
-//     quizid: {type: Schema.Types.ObjectId, ref: 'Quiz', required: true},
-//     answer: {type: Boolean, required: true},
-//     createdAt: {type: Date}
-// })
-
 const queueSchema = new Schema({
     userID: {type: Number, required: true, unique: true},
     topicID: {type: String, required: true, unique: false},

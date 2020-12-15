@@ -2,7 +2,6 @@
 const mysql = require('mysql2');
 require('mysql2/promise');
 const express = require('express');
-//const morgan = require("morgan");
 const mongoose = require('mongoose');
 
 const { topicSchema, queueSchema } = require('./schemas');
@@ -18,38 +17,19 @@ const {
     patchSpecificTopicsHandler } = require('./handlers/topicsIDHandler');
 
 const {
-    getSpecificQuizHandler,
-    postQuizHandler,
-    patchQuizHandler,
-    deleteQuizHandler,
-    postAnswerHandler } = require('./handlers/quizHandler');
-
-const {
     postQueueHandler,
     deleteQueueHandler,
     getQueueHandler} = require('./handlers/queuesHandler')
 
 const addr = process.env.ADDR || ":80";
 
-var con = mysql.createConnection({
-    host: "mysql",
-    user: "root",
-    password: "sqlpassword",
-    database: "mysql"
-});
-
-con.connect(function(err) {
-    if (err) throw err;
-});
 
 
 const mongoEndpoint = 'mongodb://mongocontainer:27017/mongoDB' // we define the schema inside the code
 const [host, port] = addr.split(":")
 
 const Topic = mongoose.model("Topic", topicSchema);
-const Queue = mongoose.model("Queue", queueSchema)
-//const Quiz = mongoose.model("Quiz", quizSchema);
-//const Answer = mongoose.model("Answer", answerSchema);
+const Queue = mongoose.model("Queue", queueSchema);
 
 const app = express();
 app.use(express.json()); // add JSON request body parsing middleware -- middleware handler function that parses JSON in request body
@@ -69,24 +49,13 @@ app.post("/v1/topics", RequestWrapper(postTopicsHandler, { Topic }));
 
 //Topics by ID handlers
 app.get("/v1/topics/:topicID", RequestWrapper(getSpecificTopicsHandler, { Topic }));
-app.patch("/v1/topics/:topicID", RequestWrapper(patchSpecificTopicsHandler, { Topic, con }));
+app.patch("/v1/topics/:topicID", RequestWrapper(patchSpecificTopicsHandler, { Topic }));
 app.delete("/v1/topics/:topicID", RequestWrapper(deleteSpecificTopicsHandler, { Topic }));
 
 // Queue Handlers
 app.post("/v1/queue", RequestWrapper(postQueueHandler, { Queue }));
 app.delete("/v1/queue", RequestWrapper(deleteQueueHandler, { Queue }));
 app.get("/v1/queue", RequestWrapper(getQueueHandler, { Queue }));
-
-// quiz handlers
-// app.route("/v1/topics/:topicID/quiz")
-//     .get(RequestWrapper(getSpecificQuizHandler, { Topic, Quiz }))
-//     .post(RequestWrapper(postQuizHandler, { Topic, Quiz }))
-//     .patch(RequestWrapper(patchQuizHandler, { Topic, Quiz }))
-//     .delete(RequestWrapper(deleteQuizHandler, { Topic, Quiz }));
-
-// // take quiz handler
-// app.route("/v1/topics/:topicID/quiz/take")
-//     .post(RequestWrapper(postAnswerHandler, { Topic, Quiz, Answer }))
 
 connect();
 mongoose.connection.on('error', console.error)

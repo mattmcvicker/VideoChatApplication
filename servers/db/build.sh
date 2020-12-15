@@ -1,5 +1,4 @@
-# TODO: decide on docker image
-docker build -t {DOCKER_ACCOUNT}/db .
+docker build -t kjmasumo/db .
 
 # run docker container
 docker run -d -p 3306:3306 \
@@ -7,4 +6,4 @@ docker run -d -p 3306:3306 \
 --name mysql \
 -e MYSQL_ROOT_PASSWORD=sqlpassword \
 -e MYSQL_DATABASE=mysql \
-{DOCKER_ACCOUNT}/db # TODO: decide on docker image
+kjmasumo/db

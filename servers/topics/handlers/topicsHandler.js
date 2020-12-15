@@ -11,9 +11,6 @@ const getTopicsHandler = async (req, res, { Topic }) => {
 const postTopicsHandler = async (req, res, { Topic }) => {
     try {
         const temp = req.headers["x-user"];
-        //var ID = temp;
-        console.log(req.headers)
-        //ID = ID.split("id: ")[1].split("}")[0];
         var ID = JSON.parse(temp).id
         var { name } = req.body
         if (!name) {

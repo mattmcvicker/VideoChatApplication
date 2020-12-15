@@ -7,8 +7,6 @@ let quizmain = document.querySelector("#quiz-body")
 let formsection = document.querySelector("#topic-form-section")
 let listsection = document.querySelector("#topic-list")
 let listsection2 = document.querySelector("#topic-list-section")
-//for some reason using only one of listsection 1 or 2 didnt make the
-//page display properly
 
 const apibase = "https://api.kenmasumoto.me";
 const host = "https://kenmasumoto.me"
@@ -19,6 +17,10 @@ const specificTopicHandler = "/v1/topics/";
 const topicHandler = "/v1/topics";
 const queueHandler = "/v1/queue";
 
+var auth;
+var header;
+var user;
+
 
 //Post a new topic Event listeners
 document.querySelector("#postbtn").addEventListener("click",
@@ -26,46 +28,6 @@ document.querySelector("#postbtn").addEventListener("click",
         toggleVisibilty()
     }
 );
-
-// document.querySelector("#submit-button").addEventListener("click",
-//     () => {
-//         let input = document.querySelector("#topic-name").value
-//         let fetchbody = {name:input}
-
-//         //post the new topic
-//         fetch(
-//             apibase + topicHandler,
-//             {
-//                 method:"POST",
-//                 headers: {
-//                     "Authorization":auth,
-//                     "Content-Type": "application/json"
-//                 },
-//                 body:JSON.stringify(fetchbody)
-//             }
-//         ).then(function(response) {  //when done downloading
-//             return response.json();  //second promise is anonymous
-//             }
-//         ).then(
-//             () =>{
-//                 generateTopicList().then(
-//                     () => {
-//                         toggleVisibilty()
-//                     }
-//                 )
-//             }
-//         ).catch(
-//             (response) => {
-//                 console.log(response)
-//                 if (response.status > 300) {
-//                     return
-//                 }
-//             }
-//         )
-//     }
-// );
-
-
 
 document.querySelector("#form-back-button").addEventListener("click",
     () => {
@@ -84,22 +46,7 @@ function toggleVisibilty() {
 
 async function generateTopicList(){
     listsection.innerHTML = "";
-    // //placeholder topics
 
-    // //set date to right format (got code from somewhere on the internet)
-    // var today = new Date();
-    // var dd = String(today.getDate()).padStart(2, '0');
-    // var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    // var yyyy = today.getFullYear();
-
-    // today = mm + '/' + dd + '/' + yyyy;
-
-    
-    // for (var i = 0; i < 5; i++) {
-    //     listsection.appendChild(topicitem(1, "Salads? "+i , today, "squidward69", 69))
-    // }
-
-    console.log("Topic List Being Generated")
     fetch(
         apibase + topicHandler,
         {
@@ -130,17 +77,7 @@ async function generateTopicList(){
             }
         }
     )
-    
-    // .forEach(
-    //     (item) => {
-    //         listsection.appendChild(topicitem(item.id, item.name, item.createdAt, item.creator, item.votes))
-    //     }
-    // )
 }
-
-var auth;
-var header;
-var user;
 
 async function topicsInit(){
     auth = localStorage.getItem("Authorization")
@@ -163,47 +100,43 @@ async function topicsInit(){
     })
 
     document.querySelector("#submit-button").addEventListener("click",
-    () => {
-        let input = document.querySelector("#topic-name").value
-        let fetchbody = {name:input}
+        () => {
+            let input = document.querySelector("#topic-name").value
+            let fetchbody = {name:input}
 
-        //post the new topic
-        fetch(
-            apibase + topicHandler,
-            {
-                method:"POST",
-                headers: {
-                    "Authorization":auth,
-                    "Content-Type": "application/json"
-                },
-                body:JSON.stringify(fetchbody)
-            }
-        ).then(function(response) {  //when done downloading
-            return response.json();  //second promise is anonymous
-            }
-        ).then(
-            () =>{
-                generateTopicList().then(
-                    () => {
-                        toggleVisibilty()
-                    }
-                )
-            }
-        ).catch(
-            (response) => {
-                console.log(response)
-                if (response.status > 300) {
-                    return
+            //post the new topic
+            fetch(
+                apibase + topicHandler,
+                {
+                    method:"POST",
+                    headers: {
+                        "Authorization":auth,
+                        "Content-Type": "application/json"
+                    },
+                    body:JSON.stringify(fetchbody)
                 }
-            }
-        )
-    }
-);
+            ).then(function(response) {  //when done downloading
+                return response.json();  //second promise is anonymous
+                }
+            ).then(
+                () =>{
+                    generateTopicList().then(
+                        () => {
+                            toggleVisibilty()
+                        }
+                    )
+                }
+            ).catch(
+                (response) => {
+                    console.log(response)
+                    if (response.status > 300) {
+                        return
+                    }
+                }
+            )
+        }
+    );
 }
-
-
-
-///
 
 //create a topic item DOM object
 function topicitem(id, topicname, timecreated, topicauthor, likes) {

@@ -20,3 +20,7 @@ Users will be able to search topics, or view some of the more popular topics on 
 Users will be able to set their opinion on a particular topic as “neutral,” and that will be saved to their profile in the MySQL database. Then people will get matched to people who feel strongly about one side or other of the topic.
 Users will be able to create their own topics, asking different questions for different opinions, and have people answer those questions and get matched accordingly. These topics will be stored in the MySQL database.
 
+### System Architecture
+This diagram shows the design of our system.
+![alt text](architecture.png?raw=true "System Architecture")
+

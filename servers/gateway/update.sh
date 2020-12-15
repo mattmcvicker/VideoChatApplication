@@ -10,9 +10,6 @@ export DSN=root:sqlpassword@tcp\(mysql:3306\)/mysql
 docker rm -f api-server
 docker rm -f rServe
 docker rm -f mysql
-#docker network rm customNet
-
-#docker network create customNet
 
 # create mysql container
 docker run -d \
@@ -20,7 +17,7 @@ docker run -d \
 --name mysql \
 -e MYSQL_ROOT_PASSWORD=sqlpassword \
 -e MYSQL_DATABASE=mysql \
-kjmasumo/db # TODO: decide on docker image 
+kjmasumo/db
 
 # create redis container
 docker run  -d --rm --network customNet --name rServe redis
@@ -36,4 +33,4 @@ docker run -d -p 443:443 \
 -e SESSIONKEY=$SESSIONKEY \
 -e DSN=$DSN \
 -v /etc/letsencrypt:/etc/letsencrypt:ro \
-kjmasumo/servers # TODO: decide on docker image 
+kjmasumo/servers

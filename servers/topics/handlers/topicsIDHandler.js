@@ -15,8 +15,7 @@ const getSpecificTopicsHandler = async (req, res, { Topic }) => {
 const patchSpecificTopicsHandler = async (req, res, { Topic }) => {
     try {
         const temp = req.headers["x-user"];
-        var userID = temp;
-        userID = userID.split("id: ")[1].split("}")[0];
+        var userID = JSON.parse(temp).id
 
         var topicID = req.body.topicID;
         const topic = await Topic.find({_id: topicID})[0]; 
@@ -26,8 +25,6 @@ const patchSpecificTopicsHandler = async (req, res, { Topic }) => {
             topic.votes.add(userID)
         }
 
-
-        // res.status(500).send(channel)
         const query = topic;
         query.save((err, updatedTopic) => {
             if (err) {
@@ -42,11 +39,12 @@ const patchSpecificTopicsHandler = async (req, res, { Topic }) => {
     }
 }
 
-const deleteSpecificTopicsHandler = async (req, res, { Topic, con }) => {
+const deleteSpecificTopicsHandler = async (req, res, { Topic }) => {
     try {
         const temp = req.headers["x-user"];
-        var userID = temp;
-        userID = userID.split("id: ")[1].split("}")[0];
+        var userID = JSON.parse(temp).id
+
+
         const topicID = req.params.topicID;
         const topic = await Topic.find({_id: topicID})[0]; 
         if (topic.length < 1) {
