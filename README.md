@@ -21,6 +21,7 @@ Users will be able to set their opinion on a particular topic as “neutral,” 
 Users will be able to create their own topics, asking different questions for different opinions, and have people answer those questions and get matched accordingly. These topics will be stored in the MySQL database.
 
 ### System Architecture
-This diagram shows the design of our system.
+The following diagram shows the design of our system. Our server is comprised of a gateway, a Redis Store to handle user sessions, a MySQL database to store user information, a Topics Nodejs microservice which handles requests for topics and the queue, and a MongoDB container to store topic and queue information.
+
 ![alt text](architecture.png?raw=true "System Architecture")
 
